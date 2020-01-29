@@ -1,0 +1,70 @@
+<section>
+  <!-- search Bar -->
+  <div class="search">
+    <label for="searchInput">
+        <img src="assets/svg/search.svg" alt="Search icon">
+    </label>
+    <input type="text" autocomplete="off" #search id="searchInput" placeholder="Search Contacts" [(ngModel)]="searchQueryWord"
+        (focusout)="closeSearchSection($event)" (ngModelChange)="handleSearchFunctionality($event)">
+  </div>
+  <!-- Alphabet -->
+  <div class="alphabet" *ngIf="!serachMode">
+    <div *ngFor="let contact of formatedContacts" (click)="scrollToLetterSection(contact.letter)">{{contact.letter | uppercase}}</div>
+  </div>
+  <!-- Contacts -->
+  <div class="contacts" *ngIf="!serachMode">
+    <!-- Recent contacts -->
+    <div class="recent" #recent>
+      <h5>Recent Contacts</h5>
+      <div class="user" *ngFor="let user of recentContacts">
+        <div class="avatar" [ngStyle]="{ 'background-image': 'url(' + user.image + ')'}"></div>
+        <div class="info">
+          <div class="name">{{user.fullName}}</div>
+          <div class="email">{{user.email}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- All contacts -->
+    <div class="all">
+      <!-- render this div every letter group -->
+      <div *ngFor="let letterGroup of formatedContacts" [class]="letterGroup.letter" #contacts>
+        <h5>{{letterGroup.letter | uppercase}}</h5>
+        <!-- render div for user every item in letterGroup.items -->
+        <div class="user" *ngFor="let user of letterGroup.items">
+          <div class="avatar" [ngStyle]=" user.image && { 'background-image': 'url(' + user.image + ')'}"></div>
+          <div class="info">
+            <div class="name">{{user.fullName}}</div>
+            <div class="email">{{user.email}}</div>
+          </div>
+        </div>
+        <!-- / user -->
+      </div>
+    </div>
+  </div>
+  <!-- End contacts -->
+
+  <!-- Search mode -->
+  <div class="search_results" *ngIf="serachMode">
+    <h5 *ngIf="!noDataFound">Contacts <span *ngIf="identicalContacts">{{identicalContacts.length}} Contacts found</span></h5>
+    <!-- User -->
+    <div class="user" *ngFor="let user of identicalContacts">
+      <div class="avatar" [ngStyle]="{ 'background-image': 'url(' + user.image + ')'}"></div>
+      <div class="info">
+        <div class="name">{{user.fullName}}</div>
+        <div class="email">{{user.email}}</div>
+      </div>
+    </div>
+    <!-- No data found -->
+    <div class="no_data_found" *ngIf="noDataFound">
+      <img src="../../assets/svg/no-data-found.svg" alt="Your search dosen't match any contact">
+      <p>Your search dosen't match any contact!</p>
+       <div class="actions">
+         <button mat-stroked-button (click)="backToContact(search)">Back to contacts</button>
+         <button mat-flat-button class="add" routerLink="/add-new-contact">Add a new contact</button>
+       </div>
+      </div>
+    </div>
+
+  <!-- Add new contacts -->
+  <button mat-mini-fab class="addNewContacts" routerLink="/add-new-contact" *ngIf="!serachMode"></button>
+</section>

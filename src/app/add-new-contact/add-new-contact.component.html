@@ -1,0 +1,42 @@
+<form #contactForm="ngForm" novalidate (ngSubmit)="handlerFunction(contactForm)">
+  <h1>Add a New Contact</h1>
+  <!-- Upload photo -->
+  <div class="upload_img">
+    <label for="uploadImage">
+      <div class="avatar" #avatar></div>
+      <h4>Add Photo</h4>
+    </label>
+    <input type="file" id="uploadImage" accept="image/*" (change)="readURL($event, avatar)" 
+      name="image" #image="ngModel" [(ngModel)]="contactForm.image">
+  </div>
+  <!-- First name -->
+  <mat-form-field>
+    <input matInput required placeholder="First name" name="firstName" #firstName="ngModel" [(ngModel)]="contactForm.firstName">
+  </mat-form-field>
+  <!-- Last name -->
+  <mat-form-field>
+    <input matInput required placeholder="Last name" name="lastName" #lastName="ngModel" [(ngModel)]="contactForm.lastName">
+  </mat-form-field>
+  <!-- Country code -->
+  <mat-form-field class="country-code">
+    <input matInput required name="countryCode" #countryCode="ngModel" [(ngModel)]="contactForm.countryCode" placeholder="Country code">
+  </mat-form-field>
+  <!-- Phone -->
+  <mat-form-field class="phone">
+    <input matInput required placeholder="Type your phone number" name="phone" #phone="ngModel" [(ngModel)]="contactForm.phone">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput required placeholder="Email" name="email" #email="ngModel" [(ngModel)]="contactForm.email" 
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+    <mat-error *ngIf="email.hasError('pattern')">
+      Please enter a valid email address
+    </mat-error>
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-flat-button class="cancel" routerLink="/">Cancel</button>
+    <button mat-flat-button class="add">Add contact</button>
+  </div>
+
+</form>
